@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.benrhine:semantic-versioning-with-build-number-kotlin:0.0.1-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'com.gradle.plugin-publish' version '1.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.20-RC'
+}
+
+ext.vcsUser                                 = System.env.GITHUB_ACTOR         // DO NOT PUT IN PROPERTIES FILE
+ext.vcsPass                                 = System.env.GITHUB_TOKEN   // DO NOT PUT IN PROPERTIES FILE
+
+group 'com.benrhine'
+version '0.0.1-SNAPSHOT'
+
+apply plugin: 'com.benrhine.semantic-versioning-with-build-number-kotlin'
+
+gradlePlugin {
+    website = 'https://benrhine.com'
+    vcsUrl = 'https://github.com/benrhine/semantic-versioning-with-build-number-kotlin'
+    plugins {
+        semanticVersioningWithBuildNumberPlugin {
+            id = 'com.benrhine.semantic-versioning-with-build-number-kotlin'
+            displayName = 'Semantic versioning with build number'
+            description = 'Flexible semantic versioning with the ability to include a build number of use for SAFE Agile'
+            tags.set(['semantic', 'version', 'build', 'number', 'build number', 'safe', 'agile', 'safe agile'])
+            implementationClass = 'com.benrhine.plugins.v1.SemanticVersioningWithBuildNumberPlugin'
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+//task printVersion {
+//    doLast {
+//        println "$version"
+//    }
+//}
+
+/** --------------------------------------------------------------------------------------------------------------------
+ * Publish: Modern way to publish artifacts using the maven-publish plugin (Gradle 7+)
+ *
+ * Currently ./gradlew publish will publish a usable artifact to the local build folder. Once published the artifact
+ * will need to be copied over to the libraries project and pushed to the repository MANUALLY for use. It should
+ * be possible to automatically publish the artifact (see commented out repo block) but currently that configuration
+ * fails due to an xml parse error.
+ *
+ * https://www.jetbrains.com/help/idea/add-a-gradle-library-to-the-maven-repository.html#publish_remote
+ *
+ * ------------------------------------------------------------------------------------------------------------------ */
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/benrhine/libraries")
+            credentials {
+                username = "$vcsUser"
+                password = "$vcsPass"
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
