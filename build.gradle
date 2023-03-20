@@ -49,6 +49,14 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+
 //task printVersion {
 //    doLast {
 //        println "$version"

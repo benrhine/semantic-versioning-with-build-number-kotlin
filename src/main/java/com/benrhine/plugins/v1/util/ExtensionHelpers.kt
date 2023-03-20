@@ -71,10 +71,7 @@ object ExtensionHelpers {
             project.extensions.findByName("versionConfig") as SemanticVersioningWithBuildNumberPluginExtension?
         var path = "gradle.properties"
         if (extension != null) {
-            val extensionDefinedPath = extension.customVersionPropertiesPath
-            if (extensionDefinedPath != null) {
-                path = extensionDefinedPath
-            }
+            path = extension.customVersionPropertiesPath
         }
         return path
     }
@@ -122,10 +119,7 @@ object ExtensionHelpers {
             project.extensions.findByName("versionConfig") as SemanticVersioningWithBuildNumberPluginExtension?
         var path = prop.getProperty("artifact-type")
         if (extension != null) {
-            val extensionDefinedArtifactType = extension.artifactType
-            if (extensionDefinedArtifactType != null) {
-                path = extensionDefinedArtifactType
-            }
+            path = extension.artifactType
         }
         return path
     }
@@ -162,7 +156,7 @@ object ExtensionHelpers {
                 project.properties["patch"]
 
         // Check if a custom artifact type is being specified through the extension
-        if (artifactType != null && !artifactType.isEmpty()) {
+        if (!artifactType.isEmpty()) {
             checkArtifactType(artifactType)
             project.setProperty("artifact-type", artifactType)
             if (artifactType.equals("RELEASE", ignoreCase = true)) {
@@ -227,7 +221,7 @@ object ExtensionHelpers {
 //            }
 
             // Check if a custom artifact type is being specified through the extension
-            if (artifactType != null && !artifactType.isEmpty()) {
+            if (!artifactType.isEmpty()) {
                 checkArtifactType(artifactType)
                 project.setProperty("artifact-type", artifactType)
                 if (artifactType.equals("RELEASE", ignoreCase = true)) {
