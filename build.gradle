@@ -3,9 +3,9 @@ buildscript {
         mavenLocal()
         mavenCentral()
     }
-    dependencies {
-        classpath 'com.benrhine:semantic-versioning-with-build-number-kotlin:0.0.1-SNAPSHOT'
-    }
+//    dependencies {
+//        classpath 'com.benrhine:semantic-versioning-with-build-number-kotlin:0.0.1-SNAPSHOT'
+//    }
 }
 
 plugins {
@@ -17,9 +17,7 @@ ext.vcsUser                                 = System.env.GITHUB_ACTOR         //
 ext.vcsPass                                 = System.env.GITHUB_TOKEN   // DO NOT PUT IN PROPERTIES FILE
 
 group 'com.benrhine'
-version '0.0.1-SNAPSHOT'
-
-apply plugin: 'com.benrhine.semantic-versioning-with-build-number-kotlin'
+version '0.0.1'
 
 gradlePlugin {
     website = 'https://benrhine.com'
